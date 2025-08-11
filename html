@@ -1,31 +1,68 @@
-Para colocar este site no ar pelo **GitHub Pages**, siga este passo a passo:
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Treinador de Digitação - Crianças</title>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #f5f5f5; }
+    .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 8px; text-align: center; }
+    h1 { font-size: 24px; }
+    #word { font-size: 28px; margin: 20px 0; }
+    input { font-size: 18px; padding: 8px; width: 80%; }
+    button { font-size: 16px; padding: 8px 12px; margin: 10px; }
+    .stats { margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Treinador de Digitação</h1>
+    <p>Digite a palavra abaixo e pressione Enter</p>
+    <div id="word">Clique em Iniciar</div>
+    <input type="text" id="input" placeholder="Digite aqui" disabled />
+    <div>
+      <button onclick="startGame()">Iniciar</button>
+    </div>
+    <div class="stats">
+      Acertos: <span id="correct">0</span> | Erros: <span id="wrong">0</span>
+    </div>
+  </div>
 
-**1. Criar conta no GitHub**
-- Acesse [https://github.com/](https://github.com/) e crie uma conta grátis (se já tiver, pule este passo).
+  <script>
+    const words = [
+      'casa','bola','gato','pato','mãe','pai','amigo','livro','sol','lua',
+      'árvore','flor','peixe','carro','mesa','cadeira','sala','caneta','janela','sapato'
+    ];
 
-**2. Criar repositório**
-- No canto superior direito, clique em **+** → **New repository**.
-- Nomeie o repositório, por exemplo: `treinador-digitacao`.
-- Marque como **Public**.
-- Clique em **Create repository**.
+    let correct = 0, wrong = 0, currentWord = '';
 
-**3. Enviar seu arquivo HTML**
-- Na página do repositório, clique em **Add file** → **Upload files**.
-- Envie este arquivo HTML (o que você baixou daqui).
-- Clique em **Commit changes** para salvar.
+    function startGame() {
+      correct = 0; wrong = 0;
+      document.getElementById('correct').textContent = correct;
+      document.getElementById('wrong').textContent = wrong;
+      document.getElementById('input').disabled = false;
+      nextWord();
+    }
 
-**4. Ativar o GitHub Pages**
-- Vá em **Settings** do repositório.
-- No menu lateral, clique em **Pages**.
-- Em **Branch**, escolha `main` e a pasta `/root`.
-- Salve. O GitHub vai gerar um link, algo como:
-  ```
-  https://seuusuario.github.io/treinador-digitacao/
-  ```
-- Esse será o link para todas as crianças acessarem.
+    function nextWord() {
+      currentWord = words[Math.floor(Math.random() * words.length)];
+      document.getElementById('word').textContent = currentWord;
+      document.getElementById('input').value = '';
+      document.getElementById('input').focus();
+    }
 
-**5. Testar**
-- Acesse o link e verifique se o jogo carrega.
-- Se quiser, personalize o nome do repositório para que o link fique mais fácil.
-
-Se você quiser, posso te entregar o **HTML já salvo** pronto para upload no GitHub, sem precisar editar nada. Quer que eu faça isso agora?
+    document.getElementById('input').addEventListener('keyup', function(e) {
+      if (e.key === 'Enter') {
+        if (this.value.trim() === currentWord) {
+          correct++;
+          document.getElementById('correct').textContent = correct;
+        } else {
+          wrong++;
+          document.getElementById('wrong').textContent = wrong;
+        }
+        nextWord();
+      }
+    });
+  </script>
+</body>
+</html>
